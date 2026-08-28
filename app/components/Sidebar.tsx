@@ -1,0 +1,106 @@
+'use client';
+import Link from 'next/link';
+import { 
+  Home, 
+  ArrowDownLeft, 
+  ArrowUpRight, 
+  ArrowLeftRight, 
+  Receipt, 
+  FileText, 
+  BarChart3, 
+  Settings,
+  CreditCard
+} from 'lucide-react';
+
+export default function Sidebar() {
+  return (
+    <aside className="w-64 bg-white min-h-screen p-5 border-r border-slate-100 flex flex-col justify-between font-sans">
+      <div className="space-y-6">
+        
+        {/* โลโก้ NJ Accounting พร้อมรูปน้องเอ็นเจจริง */}
+        <div className="flex items-center gap-3 px-2">
+          <div className="w-10 h-10 rounded-2xl overflow-hidden bg-amber-950 border border-amber-300 shadow-sm flex-shrink-0">
+            <img 
+              src="/logo.png" 
+              alt="NJ Accounting Logo" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div>
+            <h1 className="font-black text-slate-900 text-base tracking-tight leading-none">
+              NJ Accounting
+            </h1>
+            <span className="text-[11px] font-bold text-amber-800">ระบบบัญชีร้านค้า</span>
+          </div>
+        </div>
+
+        {/* เมนูหลัก */}
+        <nav className="space-y-1">
+          <Link 
+            href="/" 
+            className="flex items-center gap-3 px-4 py-3 bg-[#0d1424] text-white font-extrabold text-sm rounded-2xl shadow-sm"
+          >
+            <Home className="w-4 h-4" />
+            <span>หน้าหลัก</span>
+          </Link>
+        </nav>
+
+        {/* บันทึกรายการ */}
+        <div className="space-y-1 pt-2">
+          <p className="px-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">บันทึกรายการ</p>
+          <Link href="/income" className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 font-bold text-sm rounded-xl transition">
+            <ArrowDownLeft className="w-4 h-4 text-emerald-500" />
+            <span>เงินเข้า</span>
+          </Link>
+          <button className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 font-bold text-sm rounded-xl transition text-left">
+            <ArrowUpRight className="w-4 h-4 text-rose-500" />
+            <span>เงินออก</span>
+          </button>
+          <button className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 font-bold text-sm rounded-xl transition text-left">
+            <ArrowLeftRight className="w-4 h-4 text-slate-400" />
+            <span>โอนเงิน / ธนาคาร</span>
+          </button>
+        </div>
+
+        {/* เดลิเวอรี */}
+        <div className="space-y-1 pt-2">
+          <p className="px-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">เดลิเวอรี</p>
+          <div className="flex items-center gap-3 px-4 py-2 text-slate-600 font-bold text-sm">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span>Grab</span>
+          </div>
+          <div className="flex items-center gap-3 px-4 py-2 text-slate-600 font-bold text-sm">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+            <span>LINE MAN</span>
+          </div>
+          <div className="flex items-center gap-3 px-4 py-2 text-slate-600 font-bold text-sm">
+            <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+            <span>ShopeeFood</span>
+          </div>
+        </div>
+
+        {/* ภาษี & เอกสาร */}
+        <div className="space-y-1 pt-2">
+          <p className="px-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">ภาษี & เอกสาร</p>
+          <button className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 font-bold text-sm text-left">
+            <CreditCard className="w-4 h-4 text-slate-400" />
+            <span>ภาษีเงินได้ & VAT</span>
+          </button>
+          <button className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 font-bold text-sm text-left">
+            <FileText className="w-4 h-4 text-slate-400" />
+            <span>ใบเสร็จ / ใบกำกับภาษี</span>
+          </button>
+          <button className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 font-bold text-sm text-left">
+            <BarChart3 className="w-4 h-4 text-slate-400" />
+            <span>รายงานสรุปการเงิน</span>
+          </button>
+          <button className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 font-bold text-sm text-left">
+            <Settings className="w-4 h-4 text-slate-400" />
+            <span>ตั้งค่าร้านค้า</span>
+          </button>
+        </div>
+
+      </div>
+    </aside>
+  );
+}

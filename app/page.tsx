@@ -1,4 +1,7 @@
-import Link from 'next/link';import { 
+'use client';
+
+import Link from 'next/link';
+import { 
   Bell, HelpCircle, Calendar, Plus, Upload, ArrowUpRight, ArrowDownLeft, 
   AlertCircle, ChevronRight, X, Camera, FileOutput, Calculator, ChevronDown, TrendingUp
 } from 'lucide-react';
@@ -11,13 +14,13 @@ export default function Home() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
         <div className="flex items-center gap-3.5">
           <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-amber-200 shadow-sm flex-shrink-0">
-  <img 
-    src="/logo.png" 
-    alt="NJ Accounting Logo" 
-    className="w-full h-full object-cover" 
-  />
-  <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
-</div>
+            <img 
+              src="/logo.png" 
+              alt="NJ Accounting Logo" 
+              className="w-full h-full object-cover" 
+            />
+            <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></span>
+          </div>
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-lg font-black text-slate-900 tracking-tight">สวัสดีครับ, เจ้าของร้าน 👋</h1>
@@ -135,7 +138,7 @@ export default function Home() {
 
       </div>
 
-      {/* 🚀 QUICK ACTIONS SECTION (เด่น สะดุดตา น่ารัก สำหรับกรอกข้อมูล) */}
+      {/* 🚀 QUICK ACTIONS SECTION */}
       <div>
         <div className="flex items-center gap-2 mb-2.5 px-1">
           <span className="text-sm">✨</span>
@@ -144,28 +147,28 @@ export default function Home() {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
           {/* บันทึกเงินเข้า */}
-<Link 
-  href="/income"
-  className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-4 rounded-2xl border border-emerald-400 shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden"
->
-  <div className="absolute -right-2 -bottom-2 text-4xl opacity-10 font-black">💰</div>
-  
-  {/* ไอคอนปุ่ม + ด้านข้าง */}
-  <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center font-black shrink-0 group-hover:scale-110 transition">
-    <Plus className="w-6 h-6 stroke-[3]" />
-  </div>
-  
-  <div>
-    <div className="flex items-center gap-1">
-      <p className="text-sm font-black tracking-tight">เงินเข้า</p>
-      <span className="text-xs">💰</span>
-    </div>
-    <p className="text-[10px] text-emerald-100 font-medium">บันทึกรายรับ</p>
-  </div>
-</Link>
+          <Link 
+            href="/income"
+            className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-4 rounded-2xl border border-emerald-400 shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden block"
+          >
+            <div className="absolute -right-2 -bottom-2 text-4xl opacity-10 font-black">💰</div>
+            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center font-black shrink-0 group-hover:scale-110 transition">
+              <Plus className="w-6 h-6 stroke-[3]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1">
+                <p className="text-sm font-black tracking-tight">เงินเข้า</p>
+                <span className="text-xs">💰</span>
+              </div>
+              <p className="text-[10px] text-emerald-100 font-medium">บันทึกรายรับ</p>
+            </div>
+          </Link>
 
           {/* บันทึกเงินออก */}
-          <button className="bg-gradient-to-br from-rose-500 to-red-600 text-white p-4 rounded-2xl border border-rose-400 shadow-md shadow-rose-500/20 hover:shadow-lg hover:shadow-rose-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden">
+          <Link 
+            href="/expense"
+            className="bg-gradient-to-br from-rose-500 to-red-600 text-white p-4 rounded-2xl border border-rose-400 shadow-md shadow-rose-500/20 hover:shadow-lg hover:shadow-rose-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden block"
+          >
             <div className="absolute -right-2 -bottom-2 text-4xl opacity-10 font-black">💸</div>
             <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center font-black shrink-0 group-hover:scale-110 transition">
               <ArrowUpRight className="w-6 h-6 stroke-[3]" />
@@ -177,10 +180,13 @@ export default function Home() {
               </div>
               <p className="text-[10px] text-rose-100 font-medium">บันทึกรายจ่าย</p>
             </div>
-          </button>
+          </Link>
 
           {/* ถ่ายใบเสร็จ */}
-          <button className="bg-gradient-to-br from-sky-500 to-blue-600 text-white p-4 rounded-2xl border border-sky-400 shadow-md shadow-sky-500/20 hover:shadow-lg hover:shadow-sky-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden">
+          <Link 
+            href="/expense"
+            className="bg-gradient-to-br from-sky-500 to-blue-600 text-white p-4 rounded-2xl border border-sky-400 shadow-md shadow-sky-500/20 hover:shadow-lg hover:shadow-sky-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden block"
+          >
             <div className="absolute -right-2 -bottom-2 text-4xl opacity-10 font-black">📸</div>
             <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center font-black shrink-0 group-hover:scale-110 transition">
               <Camera className="w-5 h-5 stroke-[2.5]" />
@@ -192,10 +198,10 @@ export default function Home() {
               </div>
               <p className="text-[10px] text-sky-100 font-medium">สแกนอัปโหลด</p>
             </div>
-          </button>
+          </Link>
 
           {/* สร้างรายงาน */}
-          <button className="bg-gradient-to-br from-amber-500 to-orange-500 text-white p-4 rounded-2xl border border-amber-400 shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden">
+          <div className="bg-gradient-to-br from-amber-500 to-orange-500 text-white p-4 rounded-2xl border border-amber-400 shadow-md shadow-amber-500/20 hover:shadow-lg hover:shadow-amber-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden cursor-pointer">
             <div className="absolute -right-2 -bottom-2 text-4xl opacity-10 font-black">📊</div>
             <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center font-black shrink-0 group-hover:scale-110 transition">
               <FileOutput className="w-5 h-5 stroke-[2.5]" />
@@ -207,10 +213,10 @@ export default function Home() {
               </div>
               <p className="text-[10px] text-amber-100 font-medium">ส่งออก PDF/Excel</p>
             </div>
-          </button>
+          </div>
 
           {/* คำนวณภาษี */}
-          <button className="bg-gradient-to-br from-indigo-500 to-violet-600 text-white p-4 rounded-2xl border border-indigo-400 shadow-md shadow-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden col-span-2 sm:col-span-1">
+          <div className="bg-gradient-to-br from-indigo-500 to-violet-600 text-white p-4 rounded-2xl border border-indigo-400 shadow-md shadow-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition duration-200 flex items-center gap-3 text-left group relative overflow-hidden col-span-2 sm:col-span-1 cursor-pointer">
             <div className="absolute -right-2 -bottom-2 text-4xl opacity-10 font-black">🧮</div>
             <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center font-black shrink-0 group-hover:scale-110 transition">
               <Calculator className="w-5 h-5 stroke-[2.5]" />
@@ -222,7 +228,7 @@ export default function Home() {
               </div>
               <p className="text-[10px] text-indigo-100 font-medium">ประมาณการภาษี</p>
             </div>
-          </button>
+          </div>
 
         </div>
       </div>
@@ -230,13 +236,12 @@ export default function Home() {
       {/* Main Row: Bar Chart & Delivery Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         
-        {/* Left Side: 6-Month BAR CHART (ปรับเป็นกราฟแท่ง เข้าใจง่าย) */}
+        {/* Left Side: 6-Month BAR CHART */}
         <div className="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <h3 className="font-black text-slate-900 text-sm">เปรียบเทียบ รายรับ - รายจ่าย 6 เดือนล่าสุด</h3>
             </div>
-            
             <div className="flex items-center gap-4 text-xs font-bold text-slate-600">
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-md bg-emerald-500"></span>
@@ -249,13 +254,10 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Grouped Bar Chart Graphic */}
           <div className="h-56 relative border-b border-slate-100 flex items-end justify-between px-2 sm:px-6 pt-6 pb-2 gap-2">
-            {/* Grid lines */}
             <div className="absolute inset-x-0 top-0 border-b border-dashed border-slate-100 text-[9px] text-slate-300 font-mono">200K</div>
             <div className="absolute inset-x-0 top-1/2 border-b border-dashed border-slate-100 text-[9px] text-slate-300 font-mono">100K</div>
 
-            {/* Data Bar Items */}
             {[
               { month: 'มี.ค.', inc: '60%', exp: '40%' },
               { month: 'เม.ย.', inc: '75%', exp: '45%' },
@@ -266,7 +268,6 @@ export default function Home() {
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center gap-2 h-full justify-end z-10 flex-1">
                 <div className="flex items-end gap-1 h-full w-full justify-center max-w-[48px]">
-                  {/* Income Bar */}
                   <div 
                     className="w-1/2 bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-md shadow-sm hover:brightness-110 transition cursor-pointer relative group"
                     style={{ height: item.inc }}
@@ -275,7 +276,6 @@ export default function Home() {
                       รับ: {item.inc}
                     </div>
                   </div>
-                  {/* Expense Bar */}
                   <div 
                     className="w-1/2 bg-gradient-to-t from-rose-500 to-rose-300 rounded-t-md shadow-sm hover:brightness-110 transition cursor-pointer relative group"
                     style={{ height: item.exp }}
@@ -299,7 +299,6 @@ export default function Home() {
           </div>
 
           <div className="space-y-3">
-            {/* Grab */}
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-xl bg-emerald-500 text-white font-black text-xs flex items-center justify-center shadow-sm">Grab</div>
@@ -314,7 +313,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* LINE MAN */}
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-sm">M</div>
@@ -329,7 +327,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* ShopeeFood */}
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-xl bg-orange-500 text-white font-black text-xs flex items-center justify-center shadow-sm">S</div>
@@ -365,9 +362,7 @@ export default function Home() {
           <div className="space-y-2.5">
             <div className="flex justify-between items-center p-2.5 rounded-xl hover:bg-slate-50 transition">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
-                  💵
-                </div>
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">💵</div>
                 <div>
                   <p className="font-extrabold text-xs text-slate-800">ขายอาหารหน้าร้าน</p>
                   <p className="text-[10px] text-slate-400">เงินสด • 26 ส.ค. 67 10:30</p>
@@ -378,9 +373,7 @@ export default function Home() {
 
             <div className="flex justify-between items-center p-2.5 rounded-xl hover:bg-slate-50 transition">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xs">
-                  🛒
-                </div>
+                <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xs">🛒</div>
                 <div>
                   <p className="font-extrabold text-xs text-slate-800">ซื้อวัตถุดิบ - หมู</p>
                   <p className="text-[10px] text-slate-400">Makro สาขาใหญ่ • 26 ส.ค. 67 09:15</p>
@@ -391,9 +384,7 @@ export default function Home() {
 
             <div className="flex justify-between items-center p-2.5 rounded-xl hover:bg-slate-50 transition">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
-                  🚴
-                </div>
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">🚴</div>
                 <div>
                   <p className="font-extrabold text-xs text-slate-800">ยอดขายจาก Grab</p>
                   <p className="text-[10px] text-slate-400">โอนเข้าบัญชี • 25 ส.ค. 67 16:45</p>
@@ -457,9 +448,7 @@ export default function Home() {
           <div className="space-y-2.5">
             <div className="p-2.5 rounded-xl bg-slate-50 hover:bg-amber-50/50 border border-slate-100 transition cursor-pointer flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">
-                  ⚠️
-                </div>
+                <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">⚠️</div>
                 <div>
                   <p className="font-extrabold text-xs text-slate-800">ใบเสร็จรอจัดหมวดหมู่</p>
                   <p className="text-[10px] text-slate-400">มีเอกสาร 8 รายการ</p>
@@ -470,9 +459,7 @@ export default function Home() {
 
             <div className="p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50/50 border border-slate-100 transition cursor-pointer flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xs">
-                  ❗️
-                </div>
+                <div className="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-xs">❗️</div>
                 <div>
                   <p className="font-extrabold text-xs text-slate-800">รายจ่ายไม่มีเอกสาร</p>
                   <p className="text-[10px] text-slate-400">มูลค่า 12,500 บาท</p>
@@ -483,9 +470,7 @@ export default function Home() {
 
             <div className="p-2.5 rounded-xl bg-slate-50 hover:bg-sky-50/50 border border-slate-100 transition cursor-pointer flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xs">
-                  ℹ️
-                </div>
+                <div className="w-7 h-7 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-xs">ℹ️</div>
                 <div>
                   <p className="font-extrabold text-xs text-slate-800">หัก ณ ที่จ่ายยังไม่อัปโหลด</p>
                   <p className="text-[10px] text-slate-400">มีเอกสาร 2 รายการ</p>
@@ -498,11 +483,11 @@ export default function Home() {
 
       </div>
 
-      {/* Mascot Assistant Banner (Bottom Dog Banner) */}
+      {/* Mascot Assistant Banner */}
       <div className="bg-amber-100/70 border border-amber-200/80 p-3.5 rounded-2xl flex items-center justify-between gap-3 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-amber-400 flex items-center justify-center text-xl shrink-0 shadow-sm">
-            🐶
+            🐕
           </div>
           <div>
             <p className="text-xs font-black text-amber-950">น้อง NJ เตือนนะครับ 🐾</p>

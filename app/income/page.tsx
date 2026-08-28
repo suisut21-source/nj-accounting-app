@@ -1,261 +1,352 @@
 'use client';
+
 import { useState } from 'react';
-import { Store, Utensils, HandHeart, CheckCircle2, ArrowLeft, Sparkles, Heart } from 'lucide-react';
+import { 
+  FiDollarSign, FiCalendar, FiTag, FiFileText, 
+  FiUploadCloud, FiCheckCircle, FiArrowLeft, FiTrendingUp, FiCreditCard, FiSmartphone, FiShield
+} from 'react-icons/fi';
 import Link from 'next/link';
 
 export default function IncomePage() {
-  const [tab, setTab] = useState<'store' | 'delivery' | 'gov'>('store');
+  const [category, setCategory] = useState('ขายหน้าร้าน (เงินสด/โอน)');
   
-  // State หน้าร้าน
-  const [cash, setCash] = useState('');
-  const [transfer, setTransfer] = useState('');
-  
-  // State เดลิเวอรี
-  const [deliveryApp, setDeliveryApp] = useState('LINE MAN');
-  const [grossSales, setGrossSales] = useState('');
-  const [gpFee, setGpFee] = useState('');
+  // สำหรับหน้าร้าน (แยกเงินสด / เงินโอนทันที)
+  const [cashAmount, setCashAmount] = useState('');
+  const [transferAmount, setTransferAmount] = useState('');
 
-  // State โครงการรัฐ (ไทยช่วยไทย 40/60)
-  const [govSales, setGovSales] = useState('');
+  // สำหรับเดลิเวอรี
+  const [deliveryGross, setDeliveryGross] = useState('');
+  const [gpAmount, setGpAmount] = useState('');
+  const [adsAmount, setAdsAmount] = useState('');
+  const [loanDeduction, setLoanDeduction] = useState('');
+
+  // สำหรับโครงการไทยช่วยไทย (ยอดขายเต็ม)
+  const [thaiHelpGross, setThaiHelpGross] = useState('');
+
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [note, setNote] = useState('');
+  const [success, setSuccess] = useState(false);
 
   // คำนวณยอด
-  const deliveryNet = (parseFloat(grossSales) || 0) - (parseFloat(gpFee) || 0);
-  const govAmount = parseFloat(govSales) || 0;
-  const gov40 = govAmount * 0.4;
-  const gov60 = govAmount * 0.6;
+  const cash = parseFloat(cashAmount) || 0;
+  const transfer = parseFloat(transferAmount) || 0;
+  const delivery = parseFloat(deliveryGross) || 0;
+  const gp = parseFloat(gpAmount) || 0;
+  const ads = parseFloat(adsAmount) || 0;
+  const loan = parseFloat(loanDeduction) || 0;
+  const thaiGross = parseFloat(thaiHelpGross) || 0;
+
+  const isStoreFront = category === 'ขายหน้าร้าน (เงินสด/โอน)';
+  const isThaiHelp = category === 'โครงการไทยช่วยไทย';
+
+  // ยอดเงินเข้าบัญชีตามประเภท
+  const instantDeposit = transfer; 
+  const nextDayDeliveryDeposit = Math.max(0, delivery - gp - ads - loan);
+
+  const totalStoreSales = isStoreFront ? (cash + transfer) : isThaiHelp ? thaiGross : delivery;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log({
+      category,
+      cashAmount: cash,
+      transferAmount: transfer,
+      deliveryGross: delivery,
+      gpAmount: gp,
+      adsAmount: ads,
+      loanDeduction: loan,
+      thaiHelpGross: thaiGross,
+      totalStoreSales,
+      date,
+      note
+    });
+    setSuccess(true);
+    setTimeout(() => {
+      setSuccess(false);
+      setCashAmount('');
+      setTransferAmount('');
+      setDeliveryGross('');
+      setGpAmount('');
+      setAdsAmount('');
+      setLoanDeduction('');
+      setThaiHelpGross('');
+      setNote('');
+    }, 3000);
+  };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-8 font-sans text-slate-800">
-      
-      {/* Header คลีนๆ */}
-      <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-200/80 mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link 
-            href="/" 
-            className="p-2.5 rounded-2xl bg-slate-50 hover:bg-slate-100 text-slate-600 transition border border-slate-200"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <div>
-            <h1 className="font-black text-xl text-slate-900 flex items-center gap-2">
-              บันทึกรายรับประจำวัน 💰
-            </h1>
-            <p className="text-xs text-slate-500 font-medium">NJ Accounting - ระบบบัญชีร้านค้า</p>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
         
-        <div className="hidden sm:flex items-center gap-2 bg-emerald-50 text-emerald-700 text-xs font-extrabold px-3.5 py-1.5 rounded-full border border-emerald-200/60">
-          <Sparkles className="w-4 h-4 text-emerald-500" />
-          <span>ระบบลงบัญชีง่ายๆ</span>
-        </div>
-      </div>
-
-      {/* Grid 2 Column สำหรับ Desktop / 1 Column สำหรับ Mobile */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-
-        {/* ฝั่งซ้าย: กล่องให้กำลังใจแบบไอคอนสั้นๆ คลีนๆ */}
-        <div className="md:col-span-5 space-y-4">
-          <div className="bg-gradient-to-br from-amber-500/10 via-amber-400/5 to-orange-500/10 border border-amber-200/80 p-5 rounded-3xl shadow-sm flex items-center gap-4">
-            
-            {/* ไอคอนน้องหมาโกลเด้น */}
-            <div className="w-14 h-14 bg-amber-400/20 border border-amber-300 rounded-2xl flex items-center justify-center text-3xl shadow-inner flex-shrink-0 animate-bounce">
-              🐕
-            </div>
-
-            {/* ข้อความสั้นๆ ให้กำลังใจ */}
+        {/* ส่วนหัว */}
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+          <div className="flex items-center gap-3">
+            <Link href="/" className="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors">
+              <FiArrowLeft size={20} />
+            </Link>
             <div>
-              <div className="flex items-center gap-1.5 mb-1">
-                <span className="font-black text-amber-900 text-sm">สู้ๆ ครับ! 🐾</span>
-              </div>
-              <p className="text-xs font-bold text-slate-600 leading-relaxed">
-                "ลงบัญชีวันละนิด การเงินเป๊ะปังแน่นอนครับ! 💛✨"
-              </p>
+              <h1 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <span className="p-2 bg-emerald-100 text-emerald-600 rounded-lg"><FiDollarSign size={20} /></span>
+                บันทึกปิดยอดขายประจำวัน
+              </h1>
+              <p className="text-sm text-gray-500">รองรับหน้าร้าน, เดลิเวอรี และโครงการไทยช่วยไทย</p>
             </div>
-
           </div>
+          <span className="text-2xl">🐕</span>
         </div>
 
-        {/* ฝั่งขวา: ฟอร์มกรอกข้อมูลหลัก */}
-        <div className="md:col-span-7">
+        {success && (
+          <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl flex items-center gap-3">
+            <FiCheckCircle size={24} className="text-emerald-500" />
+            <div>
+              <p className="font-semibold">บันทึกยอดปิดร้านสำเร็จแล้วครับพี่!</p>
+              <p className="text-sm">บันทึกรายได้เรียบร้อยครับ</p>
+            </div>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
           
-          {/* แท็บเลือกประเภทรายรับ */}
-          <div className="grid grid-cols-3 gap-1.5 bg-slate-200/60 p-1.5 rounded-2xl mb-4">
-            <button
-              type="button"
-              onClick={() => setTab('store')}
-              className={`py-3 text-xs md:text-sm font-extrabold rounded-xl transition flex items-center justify-center gap-2 ${
-                tab === 'store' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Store className="w-4 h-4" />
-              <span>หน้าร้าน</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setTab('delivery')}
-              className={`py-3 text-xs md:text-sm font-extrabold rounded-xl transition flex items-center justify-center gap-2 ${
-                tab === 'delivery' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Utensils className="w-4 h-4" />
-              <span>เดลิเวอรี</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setTab('gov')}
-              className={`py-3 text-xs md:text-sm font-extrabold rounded-xl transition flex items-center justify-center gap-2 ${
-                tab === 'gov' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <HandHeart className="w-4 h-4" />
-              <span>ไทยช่วยไทย</span>
-            </button>
+          {/* เลือกประเภทการขาย */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+              <FiTag size={16} /> ช่องทางการขาย / โครงการ
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {[
+                'ขายหน้าร้าน (เงินสด/โอน)', 
+                'GrabFood', 
+                'LINE MAN', 
+                'ShopeeFood',
+                'โครงการไทยช่วยไทย'
+              ].map((cat) => (
+                <button
+                  type="button"
+                  key={cat}
+                  onClick={() => setCategory(cat)}
+                  className={`py-2.5 px-4 rounded-xl border text-sm font-medium transition-all ${
+                    category === cat
+                      ? 'bg-emerald-500 text-white border-emerald-500 shadow-sm'
+                      : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* โหมด 1: ขายหน้าร้าน (เงินสด + สแกนโอน) */}
-          {tab === 'store' && (
-            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/80 space-y-5">
-              <h2 className="text-xs font-black text-slate-400 uppercase tracking-wider">🍔 สรุปยอดขายหน้าร้าน</h2>
-              
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">💵 เงินสดในลิ้นชัก (บาท)</label>
-                <input
-                  type="number"
-                  placeholder="0.00"
-                  value={cash}
-                  onChange={(e) => setCash(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-800 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"
-                />
+          {/* 1. ฟอร์มกรณีขายหน้าร้าน */}
+          {isStoreFront ? (
+            <div className="p-5 bg-gray-50 border border-gray-200 rounded-xl space-y-4">
+              <div className="font-semibold text-gray-700 text-sm flex items-center gap-2">
+                <FiCreditCard className="text-emerald-600" size={18} /> แยกยอดเงินสด (เข้าเก๊ะ) และเงินโอน (เข้าบัญชีทันที)
               </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">📱 เงินโอนเข้าสแกนหน้าร้าน (บาท)</label>
-                <input
-                  type="number"
-                  placeholder="0.00"
-                  value={transfer}
-                  onChange={(e) => setTransfer(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-800 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"
-                />
-              </div>
-
-              <div className="bg-emerald-50/80 border border-emerald-100 rounded-2xl p-4 text-center">
-                <span className="text-xs text-emerald-700 font-bold block mb-1">รวมเงินสด + โอนเข้าทันที</span>
-                <span className="text-2xl font-black text-emerald-600">
-                  ฿{((parseFloat(cash) || 0) + (parseFloat(transfer) || 0)).toLocaleString('th-TH', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* โหมด 2: เดลิเวอรี (LINE MAN / Grab / ShopeeFood) */}
-          {tab === 'delivery' && (
-            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/80 space-y-5">
-              <h2 className="text-xs font-black text-slate-400 uppercase tracking-wider">🛵 ยอดขายเดลิเวอรี</h2>
-
-              {/* เลือกแอปเดลิเวอรี 3 ค่าย */}
-              <div className="grid grid-cols-3 gap-2.5">
-                {['LINE MAN', 'Grab', 'ShopeeFood'].map((app) => (
-                  <button
-                    key={app}
-                    type="button"
-                    onClick={() => setDeliveryApp(app)}
-                    className={`py-2.5 text-xs font-bold rounded-xl border transition ${
-                      deliveryApp === app
-                        ? 'bg-emerald-50 border-emerald-500 text-emerald-700 shadow-sm'
-                        : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    {app}
-                  </button>
-                ))}
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">1. ยอดขายบนแอป (ก่อนหัก GP)</label>
-                <input
-                  type="number"
-                  placeholder="0.00"
-                  value={grossSales}
-                  onChange={(e) => setGrossSales(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-800 text-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">2. ค่า GP / หักเงินในแอป</label>
-                <input
-                  type="number"
-                  placeholder="0.00"
-                  value={gpFee}
-                  onChange={(e) => setGpFee(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 font-bold text-rose-600 text-lg focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
-                />
-              </div>
-
-              <div className="bg-sky-50/80 border border-sky-100 rounded-2xl p-4 text-center">
-                <span className="text-xs text-sky-700 font-bold block mb-1">💵 เงิน {deliveryApp} จะเข้าธนาคารวันถัดไป</span>
-                <span className="text-2xl font-black text-sky-600">
-                  ฿{deliveryNet > 0 ? deliveryNet.toLocaleString('th-TH', { minimumFractionDigits: 2 }) : '0.00'}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* โหมด 3: โครงการรัฐ (ไทยช่วยไทย 40% / 60%) */}
-          {tab === 'gov' && (
-            <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200/80 space-y-5">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xs font-black text-slate-400 uppercase tracking-wider">🇹🇭 โครงการไทยช่วยไทย</h2>
-                <span className="text-[10px] bg-blue-50 text-blue-600 font-extrabold px-2.5 py-1 rounded-full border border-blue-100">
-                  เข้า 2 รอบ
-                </span>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">ยอดขายโครงการรวมวันนี้ (บาท)</label>
-                <input
-                  type="number"
-                  placeholder="0.00"
-                  value={govSales}
-                  onChange={(e) => setGovSales(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 font-bold text-slate-800 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition"
-                />
-              </div>
-
-              {/* สรุปตารางรอบเงินเข้า */}
-              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-3 text-xs">
-                <div className="flex justify-between items-center text-slate-600">
-                  <span className="font-medium">🔵 รอบที่ 1 (เข้าพรุ่งนี้ - 40%):</span>
-                  <span className="font-extrabold text-sm text-slate-900">
-                    ฿{gov40.toLocaleString('th-TH', { minimumFractionDigits: 2 })}
-                  </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">ยอดเงินสด (เก็บเข้าเก๊ะร้าน)</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 text-sm">฿</span>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={cashAmount}
+                      onChange={(e) => setCashAmount(e.target.value)}
+                      placeholder="0.00"
+                      className="w-full pl-8 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold text-gray-800"
+                    />
+                  </div>
                 </div>
-                <div className="flex justify-between items-center text-slate-600 border-t border-slate-200 pt-3">
-                  <span className="font-medium">🟣 รอบที่ 2 (เข้าวันถัดไป/งวดถัดไป - 60%):</span>
-                  <span className="font-extrabold text-sm text-slate-900">
-                    ฿{gov60.toLocaleString('th-TH', { minimumFractionDigits: 2 })}
-                  </span>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">ยอดเงินโอน / QR (เข้าบัญชีทันที)</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 text-sm">฿</span>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={transferAmount}
+                      onChange={(e) => setTransferAmount(e.target.value)}
+                      placeholder="0.00"
+                      className="w-full pl-8 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-semibold text-gray-800"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : isThaiHelp ? (
+            /* 2. ฟอร์มกรณีโครงการไทยช่วยไทย (ไม่มีช่องหักค่าบริการ โชว์ยอดเต็ม) */
+            <div className="p-5 bg-indigo-50/60 border border-indigo-200 rounded-xl space-y-4">
+              <div className="font-semibold text-indigo-900 text-sm flex items-center gap-2">
+                <FiShield className="text-indigo-600" size={18} /> โครงการไทยช่วยไทย (ยอดขายรวม)
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-indigo-800 mb-1">ยอดขายรวมโครงการ (บาท) *</label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 font-bold">฿</span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    required
+                    value={thaiHelpGross}
+                    onChange={(e) => setThaiHelpGross(e.target.value)}
+                    placeholder="0.00"
+                    className="w-full pl-10 pr-4 py-3 bg-white border border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-lg font-semibold text-gray-800"
+                  />
+                </div>
+                <p className="text-xs text-indigo-500 mt-1">*ยอดเงินเข้าพรุ่งนี้แบ่งเป็น 2 รอบ (ยอดไม่ตายตัวตามการซื้อเพิ่ม)</p>
+              </div>
+            </div>
+          ) : (
+            /* 3. ฟอร์มกรณีเดลิเวอรีปกติ */
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                  <FiSmartphone size={16} /> ยอดขายรวมบนแอป {category} (Gross Sales) *
+                </label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-400 font-bold">฿</span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    required
+                    value={deliveryGross}
+                    onChange={(e) => setDeliveryGross(e.target.value)}
+                    placeholder="0.00"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none text-lg font-semibold text-gray-800 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="p-4 bg-amber-50/60 border border-amber-200/80 rounded-xl space-y-4">
+                <div className="flex items-center gap-2 text-amber-800 font-semibold text-sm">
+                  รายการหัก / ค่าบริการ / หักหนี้ (ถ้ามี)
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">หัก GP</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={gpAmount}
+                      onChange={(e) => setGpAmount(e.target.value)}
+                      placeholder="0.00"
+                      className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none text-xs font-medium text-gray-800"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">หัก ค่าโฆษณา</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={adsAmount}
+                      onChange={(e) => setAdsAmount(e.target.value)}
+                      placeholder="0.00"
+                      className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none text-xs font-medium text-gray-800"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">หัก ผ่อนหนี้</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={loanDeduction}
+                      onChange={(e) => setLoanDeduction(e.target.value)}
+                      placeholder="0.00"
+                      className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none text-xs font-medium text-gray-800"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* ปุ่มกดบันทึก */}
-          <button
-            type="button"
-            className="w-full mt-5 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-base rounded-2xl shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-2 active:scale-[0.99]"
-          >
-            <CheckCircle2 className="w-5 h-5" />
-            <span>บันทึกรายการรายรับ</span>
-          </button>
+          {/* สรุปยอดขายรวมทั้งหมด และยอดเงินเข้าบัญชีจริง */}
+          {isThaiHelp ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                <p className="text-xs font-medium text-blue-700">ยอดขายรวมโครงการไทยช่วยไทย</p>
+                <p className="text-lg font-bold text-blue-900 mt-1">
+                  ฿{totalStoreSales.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
+              </div>
 
-        </div>
+              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex flex-col justify-center">
+                <p className="text-xs font-medium text-emerald-800 flex items-center gap-1">
+                  <FiTrendingUp size={14} /> สถานะเงินเข้าบัญชี
+                </p>
+                <p className="text-base font-bold text-emerald-700 mt-1">
+                  💰 เงินเข้าพรุ่งนี้ (แบ่งจ่าย 2 รอบ)
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                <p className="text-xs font-medium text-blue-700">ยอดขายรวมของวันนี้</p>
+                <p className="text-lg font-bold text-blue-900 mt-1">
+                  ฿{totalStoreSales.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
+              </div>
+
+              <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                <p className="text-xs font-medium text-emerald-800 flex items-center gap-1">
+                  <FiTrendingUp size={14} /> 
+                  {isStoreFront ? 'เงินโอนเข้าบัญชีทันที' : 'เงินเข้าบัญชี (พรุ่งนี้เช้า)'}
+                </p>
+                <p className="text-lg font-extrabold text-emerald-700 mt-1">
+                  ฿{(isStoreFront ? instantDeposit : nextDayDeliveryDeposit).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* วันที่ */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+              <FiCalendar size={16} /> วันที่ทำรายการ
+            </label>
+            <input
+              type="date"
+              required
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none text-gray-800 transition-all"
+            />
+          </div>
+
+          {/* หมายเหตุ */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+              <FiFileText size={16} /> หมายเหตุ / รายละเอียดเพิ่มเติม
+            </label>
+            <textarea
+              rows={2}
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="เช่น ปิดยอดโครงการไทยช่วยไทย..."
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none text-gray-800 transition-all resize-none"
+            />
+          </div>
+
+          {/* ปุ่มบันทึก */}
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
+            <Link
+              href="/"
+              className="px-6 py-3 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-100 font-medium transition-colors"
+            >
+              ยกเลิก
+            </Link>
+            <button
+              type="submit"
+              className="px-8 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold shadow-lg shadow-emerald-500/20 transition-all"
+            >
+              บันทึกปิดยอดขาย
+            </button>
+          </div>
+        </form>
 
       </div>
-
     </div>
   );
 }

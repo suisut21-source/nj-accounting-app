@@ -78,18 +78,18 @@ export default function Sidebar() {
           {/* บันทึกรายการ */}
           <div className="space-y-1 pt-2">
             <p className="px-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">บันทึกรายการ</p>
-            <Link href="/income" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 font-bold text-sm rounded-xl transition">
+            <Link href="/income" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm rounded-xl transition">
               <ArrowDownLeft className="w-4 h-4 text-emerald-500" />
               <span>เงินเข้า</span>
             </Link>
-            <button onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 font-bold text-sm rounded-xl transition text-left">
+            <Link href="/expense" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm rounded-xl transition">
               <ArrowUpRight className="w-4 h-4 text-rose-500" />
               <span>เงินออก</span>
-            </button>
-            <button onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 font-bold text-sm rounded-xl transition text-left">
+            </Link>
+            <Link href="/transfer" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm rounded-xl transition">
               <ArrowLeftRight className="w-4 h-4 text-slate-400" />
               <span>โอนเงิน / ธนาคาร</span>
-            </button>
+            </Link>
           </div>
 
           {/* เดลิเวอรี */}
@@ -112,22 +112,22 @@ export default function Sidebar() {
           {/* ภาษี & เอกสาร */}
           <div className="space-y-1 pt-2">
             <p className="px-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">ภาษี & เอกสาร</p>
-            <button onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 font-bold text-sm text-left">
+            <Link href="/tax" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm rounded-xl transition">
               <CreditCard className="w-4 h-4 text-slate-400" />
               <span>ภาษีเงินได้ & VAT</span>
-            </button>
-            <button onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 font-bold text-sm text-left">
+            </Link>
+            <Link href="/documents" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm rounded-xl transition">
               <FileText className="w-4 h-4 text-slate-400" />
               <span>ใบเสร็จ / ใบกำกับภาษี</span>
-            </button>
-            <button onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 font-bold text-sm text-left">
+            </Link>
+            <Link href="/reports" onClick={() => setIsOn(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm rounded-xl transition">
               <BarChart3 className="w-4 h-4 text-slate-400" />
               <span>รายงานสรุปการเงิน</span>
-            </button>
-            <button onClick={() => setIsOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-600 font-bold text-sm text-left">
+            </Link>
+            <Link href="/settings" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm rounded-xl transition">
               <Settings className="w-4 h-4 text-slate-400" />
               <span>ตั้งค่าร้านค้า</span>
-            </button>
+            </Link>
           </div>
 
         </div>

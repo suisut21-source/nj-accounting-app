@@ -112,7 +112,7 @@ export default function Sidebar() {
           {/* ภาษี & เอกสาร */}
           <div className="space-y-1 pt-2">
             <p className="px-4 text-[11px] font-black text-slate-400 uppercase tracking-wider">ภาษี & เอกสาร</p>
-            <Link href="/tax" onClick={() => setIsOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm rounded-xl transition">
+            <Link href="/tax" onClick={() => setIsOpen(false)(false)} className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-bold text-sm rounded-xl transition">
               <CreditCard className="w-4 h-4 text-slate-400" />
               <span>ภาษีเงินได้ & VAT</span>
             </Link>
